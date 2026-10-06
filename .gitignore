@@ -23,3 +23,9 @@ __pycache__/
 *.log
 .env
 .env.*
+
+# 志愿服务地图运行数据（含私有精确坐标与原始照片，禁止入库）
+data/private/*
+!data/private/.gitkeep
+data/media/*
+!data/media/.gitkeep

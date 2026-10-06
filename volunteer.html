@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>志愿服务地图 | 灵墨创意</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/volunteer.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+</head>
+<body>
+<div id="toast-container"></div>
+<header class="glass scrolled">
+    <div class="container">
+        <nav>
+            <a href="index.html" class="logo">灵墨创意</a>
+            <ul class="nav-links">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="hobbies.html">兴趣爱好</a></li>
+                <li><a href="portfolio.html">个人作品</a></li>
+                <li><a href="volunteer.html" style="color: var(--primary);">志愿服务</a></li>
+                <li><a href="contact.html">联系我</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="page-header">
+    <div class="container">
+        <h1>志愿服务地图</h1>
+        <p style="color: var(--text-muted); margin-top: 1rem;">
+            地图与统计读取同一份发布快照；展示位置按隐私粒度脱敏，仅机构授权点为精确位置。
+        </p>
+    </div>
+</div>
+
+<main class="container">
+    <div class="toolbar glass">
+        <div class="seg" role="tablist" aria-label="视图切换">
+            <button id="btn-map" class="seg-btn active" type="button">🗺️ 地图</button>
+            <button id="btn-list" class="seg-btn" type="button">📋 列表</button>
+        </div>
+        <div class="year-chips" id="year-chips" aria-label="年份筛选"></div>
+        <div class="toolbar-right">
+            <button id="btn-share" class="btn btn-outline sm" type="button">🔗 分享当前筛选</button>
+            <a id="btn-export-geo" class="btn btn-outline sm" target="_blank" rel="noopener">导出 GeoJSON</a>
+            <a id="btn-export-csv" class="btn btn-outline sm" target="_blank" rel="noopener">导出 CSV</a>
+        </div>
+    </div>
+
+    <section class="stats" id="stats" aria-live="polite"></section>
+
+    <section id="view-map" class="map-wrap glass">
+        <div id="map"></div>
+        <div id="map-fallback" class="map-fallback" hidden>
+            <p class="fallback-note">地图瓦片服务暂不可用，已切换为离线示意图（位置仍来自同一公开快照，坐标不可放大套取）。</p>
+            <svg id="fallback-svg" viewBox="0 0 1000 520" role="img" aria-label="志愿服务位置示意图"></svg>
+        </div>
+        <div id="map-loading" class="map-loading">正在读取发布快照…</div>
+    </section>
+
+    <section id="view-list" class="event-list" hidden></section>
+
+    <section class="privacy-note glass">
+        <h3>位置隐私说明</h3>
+        <ul>
+            <li><strong>城市质心</strong>：未获机构公开授权的经历，仅展示所属城市的中心点——辨识度足以表达“在哪座城市”，但无法反推具体街道。</li>
+            <li><strong>模糊网格（约 11km）</strong>：可切换的更细一档，点被吸附到网格中心，适合表达“城市的哪个方向”，代价是多事件聚集可推断大致片区。</li>
+            <li><strong>机构授权点</strong>：仅在机构授权有效期内、且经历发生于该有效期时展示机构许可的公开点（如服务中心正门），授权撤销后旧版本同步下线。</li>
+            <li>精确原始定位、照片 EXIF/GPS 与后台数据不会出现在任何公开接口或导出文件中；空间搜索限制最小范围，防止框选套点。</li>
+        </ul>
+        <p class="snap-meta" id="snap-meta"></p>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="footer-bottom">
+            <p>&copy; 2026 林墨的个人主页. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script type="module" src="js/volunteer.mjs"></script>
+</body>
+</html>

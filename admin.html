@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>志愿服务地图 · 管理</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/volunteer.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="toast-container"></div>
+<header class="glass scrolled">
+    <div class="container">
+        <nav>
+            <a href="index.html" class="logo">灵墨创意 · 管理</a>
+            <ul class="nav-links">
+                <li><a href="volunteer.html">← 返回公开地图</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container admin-main">
+
+    <section id="login-card" class="glass admin-card">
+        <h2>管理登录</h2>
+        <p style="color:var(--text-muted);font-size:.9rem;">所有写操作需管理令牌（环境变量 ADMIN_TOKEN，开发默认 changeme-dev-token）。</p>
+        <input id="token" type="password" placeholder="管理令牌" autocomplete="current-password">
+        <button id="btn-login" class="btn btn-primary" type="button">登录</button>
+    </section>
+
+    <div id="admin-panel" hidden>
+        <div class="publish-bar glass">
+            <div>
+                <strong>发布控制</strong>
+                <p style="color:var(--text-muted);font-size:.85rem;margin:.2rem 0;" id="current-snap">当前快照：—</p>
+            </div>
+            <div class="policy-row">
+                <label>未授权默认粒度
+                    <select id="policy-gran">
+                        <option value="city">city 城市质心（默认，风险最低）</option>
+                        <option value="grid">grid 模糊网格（约11km）</option>
+                    </select>
+                </label>
+                <button id="btn-policy" class="btn btn-outline sm" type="button">保存粒度</button>
+                <button id="btn-publish" class="btn btn-primary" type="button">发布新快照</button>
+            </div>
+        </div>
+
+        <div class="admin-grid">
+            <section class="glass admin-card">
+                <h2>① 录入服务事件</h2>
+                <form id="form-event">
+                    <select name="orgId" required></select>
+                    <input name="date" type="date" required>
+                    <input name="hours" type="number" min="0.5" step="0.5" placeholder="服务时数（小时）" required>
+                    <input name="title" placeholder="事件标题" required>
+                    <input name="role" placeholder="角色（志愿者/领队…）">
+                    <textarea name="summary" placeholder="简述（可选）" rows="2"></textarea>
+                    <details>
+                        <summary>事件级原始钉点（可选，私有不公开）</summary>
+                        <select name="coordSystem">
+                            <option value="wgs84">WGS84（GPS/相机）</option>
+                            <option value="gcj02">GCJ-02（国内地图拾取）</option>
+                        </select>
+                        <div class="two-col">
+                            <input name="pinnedLng" type="number" step="any" placeholder="经度">
+                            <input name="pinnedLat" type="number" step="any" placeholder="纬度">
+                        </div>
+                    </details>
+                    <button class="btn btn-primary" type="submit">保存事件</button>
+                </form>
+            </section>
+
+            <section class="glass admin-card">
+                <h2>② 机构与地点</h2>
+                <form id="form-org" class="inline-form">
+                    <input name="name" placeholder="机构名称" required>
+                    <input name="validFrom" type="date" title="名称生效日">
+                    <button class="btn btn-outline sm" type="submit">新建机构</button>
+                </form>
+                <div id="org-list" class="org-list"></div>
+            </section>
+
+            <section class="glass admin-card">
+                <h2>③ 照片（上传即剥离 EXIF/GPS）</h2>
+                <form id="form-photo">
+                    <select name="eventId" required></select>
+                    <input name="file" type="file" accept="image/jpeg,image/png,image/webp" required>
+                    <button class="btn btn-primary" type="submit">上传并清洗</button>
+                </form>
+                <div class="audit-row">
+                    <button id="btn-audit" class="btn btn-outline sm" type="button">审计公开媒体</button>
+                    <button id="btn-reprocess" class="btn btn-outline sm" type="button">从私有原图重处理全部派生图</button>
+                </div>
+                <pre id="audit-out" class="audit-out"></pre>
+            </section>
+
+            <section class="glass admin-card">
+                <h2>④ 发布预览（脱敏后）</h2>
+                <button id="btn-preview" class="btn btn-outline sm" type="button">生成预览</button>
+                <pre id="preview-out" class="audit-out tall"></pre>
+            </section>
+        </div>
+
+        <section class="glass admin-card">
+            <h2>事件与机构总览</h2>
+            <div id="state-table"></div>
+        </section>
+    </div>
+</main>
+
+<script src="js/main.js"></script>
+<script type="module" src="js/admin.mjs"></script>
+</body>
+</html>

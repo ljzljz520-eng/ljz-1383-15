@@ -1,0 +1,12 @@
+{
+  "name": "personal-site-volunteer-map",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "个人站志愿服务地图：脱敏发布快照、有效期机构地点、EXIF 清洗、公开空间层",
+  "scripts": {
+    "start": "VMAP_AUTOSTART=1 node server/server.mjs",
+    "test": "for f in server/test/*.test.mjs; do node --test \"$f\" || exit 1; done"
+  },
+  "engines": { "node": ">=18" }
+}
